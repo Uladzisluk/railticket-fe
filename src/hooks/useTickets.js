@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
+import apiUtils from '../utils/apiUtils';
 
 export const useTickets = () => {
-    const [tickets, setTickets] = useState([]);
+    const handleAddTicket = useCallback(async (newTicketData) => {
+        const response = await apiUtils.post('/api/Tickets', newTicketData);
+        return response.data;
+    }, []);
 
-    const addTicket = (ticket) => {
-        setTickets((prevTickets) => [...prevTickets, ticket]);
-    };
-    
-    const removeTicket = (ticketId) => {
-        setTickets((prevTickets) => prevTickets.filter(ticket => ticket.id !== ticketId));
-    };
+    const handleDeleteTicket = useCallback(async (ticketId) => {
+        await apiUtils.delete(`/api/Tickets/${ticketId}`);
+    }, []);
 
-    return { tickets, addTicket, removeTicket };
+    return { handleAddTicket, handleDeleteTicket };
 };

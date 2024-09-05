@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
+import apiUtils from '../utils/apiUtils';
 
 export const useTrains = () => {
-    const [trains, setTrains] = useState([]);
+    const handleAddTrain = useCallback(async (newTrainData) => {
+        const response = await apiUtils.post('/api/Trains', newTrainData);
+        return response.data;
+    }, []);
 
-    const addTrain = (train) => {
-        setTrains((prevTrains) => [...prevTrains, train]);
-    };
-    
-    const removeTrain = (trainId) => {
-        setTrains((prevTrains) => prevTrains.filter(train => train.id !== trainId));
-    };
+    const handleDeleteTrain = useCallback(async (trainId) => {
+        await apiUtils.delete(`/api/Trains/${trainId}`);
+    }, []);
 
-    return { trains, addTrain, removeTrain };
+    return { handleAddTrain, handleDeleteTrain };
 };

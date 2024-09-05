@@ -1,22 +1,31 @@
-import React, { createContext, useState, useContext } from 'react';
-import { useStation } from '../hooks/useStation';
+import React, { createContext, useState, useCallback } from 'react';
+import apiUtils from '../utils/apiUtils';
 
-const StationContext = createContext();
+export const StationContext = createContext();
 
 export const StationProvider = ({ children }) => {
-    const { stations, addStation, removeStation, fetchStations } = useStation();
+    const [stations, setStations] = useState([]);
+
+    const fetchStations = useCallback(async () => {
+        try {
+            const response = await apiUtils.get('/api/Station');
+            setStations(response.data);
+        } catch (error) {
+            console.error('Error in receiving stations:', error);
+        }
+    }, []);
+
+    const addStation = (newStation) => {
+        setStations((prevStations) => [...prevStations, newStation]);
+    };
+
+    const deleteStation = (stationId) => {
+        setStations((prevStations) => prevStations.filter(station => station.id !== stationId));
+    };
 
     return (
-        <StationContext.Provider value={{ stations, addStation, removeStation, fetchStations }}>
+        <StationContext.Provider value={{ stations, fetchStations, addStation, deleteStation }}>
             {children}
         </StationContext.Provider>
     );
-};
-
-export const useStationContext = () => {
-    const context = useContext(StationContext);
-    if (context === undefined) {
-        throw new Error('useStationContext must be used within a StationProvider');
-    }
-    return context;
 };

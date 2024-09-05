@@ -1,35 +1,49 @@
 import React, { useState } from 'react';
 import Register from '../../components/Auth/Register';
 import { useAuth } from '../../hooks/useAuth';
-import './RegisterPage.css';
+import '../../App.css';
 
 const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const { handleRegister } = useAuth();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
         if (password !== confirmPassword) {
-            // Выводим сообщение об ошибке, если пароли не совпадают
-            alert('Passwords do not match!');
+                setError('Passwords don\'t match');
             return;
         }
-        register(email, password);
+
+        try {
+            await handleRegister({ email, password });
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            // Redirect to the home page
+            window.location.href = '/login';
+        } catch (err) {
+            setError('Error during registration. Please try again.');
+            console.error('Registration error:', err);
+        }
     };
 
     return (
         <div className="register-page">
-            <h1>Register</h1>
+            <h1>Registration</h1>
             <Register
                 email={email}
-                setEmail={setEmail}
                 password={password}
-                setPassword={setPassword}
                 confirmPassword={confirmPassword}
-                setConfirmPassword={setConfirmPassword}
+                onEmailChange={(e) => setEmail(e.target.value)}
+                onPasswordChange={(e) => setPassword(e.target.value)}
+                onConfirmPasswordChange={(e) => setConfirmPassword(e.target.value)}
                 onSubmit={handleSubmit}
             />
+            {error && <p className="error">{error}</p>}
         </div>
     );
 };

@@ -1,22 +1,31 @@
-import React, { createContext, useState, useContext } from 'react';
-import { useTrains } from './useTrains';
+import React, { createContext, useState, useCallback } from 'react';
+import apiUtils from '../utils/apiUtils';
 
-const TrainsContext = createContext();
+export const TrainsContext = createContext();
 
 export const TrainsProvider = ({ children }) => {
-    const { trains, addTrain, removeTrain } = useTrains();
+    const [trains, setTrains] = useState([]);
+
+    const fetchTrains = useCallback(async () => {
+        try {
+            const response = await apiUtils.get('/api/Trains');
+            setTrains(response.data);
+        } catch (error) {
+            console.error('Error when receiving trains:', error);
+        }
+    }, []);
+
+    const addTrain = (newTrain) => {
+        setTrains((prevTrains) => [...prevTrains, newTrain]);
+    };
+
+    const deleteTrain = (trainId) => {
+        setTrains((prevTrains) => prevTrains.filter(train => train.id !== trainId));
+    };
 
     return (
-        <TrainsContext.Provider value={{ trains, addTrain, removeTrain }}>
+        <TrainsContext.Provider value={{ trains, fetchTrains, addTrain, deleteTrain }}>
             {children}
         </TrainsContext.Provider>
     );
-};
-
-export const useTrainsContext = () => {
-    const context = useContext(TrainsContext);
-    if (context === undefined) {
-        throw new Error('useTrainsContext must be used within a TrainsProvider');
-    }
-    return context;
 };

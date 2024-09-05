@@ -1,26 +1,15 @@
-import {useCallback, useState} from 'react';
-import { fetchRoutesFromAPI } from '../utils/apiUtils';
+import { useCallback } from 'react';
+import apiUtils from '../utils/apiUtils';
 
 export const useRoutes = () => {
-    const [routes, setRoutes] = useState([]);
-    const [error, setError] = useState(null);
-
-    const addRoute = (route) => {
-        setRoutes((prevRoutes) => [...prevRoutes, route]);
-    };
-
-    const removeRoute = (routeId) => {
-        setRoutes((prevRoutes) => prevRoutes.filter(route => route.id !== routeId));
-    };
-
-    const fetchRoutes = useCallback(async () => {
-        try {
-            const data = await fetchRoutesFromAPI();
-            setRoutes(data);
-        } catch (err) {
-            setError('Failed to fetch routes.');
-        }
+    const handleAddRoute = useCallback(async (newRouteData) => {
+        const response = await apiUtils.post('/Routes', newRouteData);
+        return response.data;
     }, []);
 
-    return { routes, addRoute, removeRoute, fetchRoutes };
+    const handleDeleteRoute = useCallback(async (routeId) => {
+        await apiUtils.delete(`/Routes/${routeId}`);
+    }, []);
+
+    return { handleAddRoute, handleDeleteRoute };
 };

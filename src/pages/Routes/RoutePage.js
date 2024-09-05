@@ -1,19 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import RouteList from '../../components/Routes/RouteList';
-import './RoutePage.css';
-import {useRoutesContext} from "../../context/RoutesContext";
+import { RoutesContext } from '../../context/RoutesContext';
+import { useRoutes } from '../../hooks/useRoutes';
+import '../../App.css';
 
 const RoutePage = () => {
-    const context = useRoutesContext();
+    const { routes, fetchRoutes, addRoute, deleteRoute } = useContext(RoutesContext);
+    const { handleAddRoute, handleDeleteRoute } = useRoutes();
 
     useEffect(() => {
-        context.fetchRoutes();
-    }, [context.fetchRoutes]);
+        fetchRoutes();
+    }, [fetchRoutes]);
+
+    const handleAddClick = async (newRouteData) => {
+        try {
+            const addedRoute = await handleAddRoute(newRouteData);
+            addRoute(addedRoute);
+        } catch (error) {
+            console.error('Error when adding a route:', error);
+        }
+    };
+
+    const handleDeleteClick = async (routeId) => {
+        try {
+            await handleDeleteRoute(routeId);
+            deleteRoute(routeId);
+        } catch (error) {
+            console.error('Error when deleting a route:', error);
+        }
+    };
 
     return (
         <div className="route-page">
             <h1>Routes</h1>
-            <RouteList routes={context.routes} />
+            {/* List of routes */}
+            <RouteList
+                routes={routes}
+                onDelete={handleDeleteClick}
+                onAdd={handleAddClick}
+            />
         </div>
     );
 };

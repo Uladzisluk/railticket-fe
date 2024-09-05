@@ -1,20 +1,46 @@
-import React, { useEffect } from 'react';
+// /pages/Station/StationPage.js
+
+import React, { useEffect, useContext } from 'react';
+import StationList from '../../components/Stations/StationList';
+import { StationContext } from '../../context/StationContext';
 import { useStation } from '../../hooks/useStation';
-import StationList from '../../components/Station/StationList';
-import './StationPage.css';
-import {useStationContext} from "../../context/StationContext";
+import '../../App.css';
+
 const StationPage = () => {
-    const context = useStationContext();
+    const { stations, fetchStations, addStation, deleteStation } = useContext(StationContext);
+    const { handleAddStation, handleDeleteStation } = useStation();
 
     useEffect(() => {
-        context.fetchStations();
-    }, [context.fetchStations]);
+        fetchStations();
+    }, [fetchStations]);
+
+    const handleAddClick = async (newStationData) => {
+        try {
+            const addedStation = await handleAddStation(newStationData);
+            addStation(addedStation);
+        } catch (error) {
+            console.error('Error when adding a station:', error);
+        }
+    };
+
+    const handleDeleteClick = async (stationId) => {
+        try {
+            await handleDeleteStation(stationId);
+            deleteStation(stationId);
+        } catch (error) {
+            console.error('Error when deleting a station:', error);
+        }
+    };
 
     return (
         <div className="station-page">
             <h1>Stations</h1>
-            {context.error && <p className="error-message">{context.error}</p>}
-            <StationList stations={context.stations} />
+            {/* List of stations */}
+            <StationList
+                stations={stations}
+                onDelete={handleDeleteClick}
+                onAdd={handleAddClick}
+            />
         </div>
     );
 };

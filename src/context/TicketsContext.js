@@ -1,22 +1,31 @@
-import React, { createContext, useState, useContext } from 'react';
-import { useTickets } from '../hooks/useTickets';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
+import apiUtils from '../utils/apiUtils';
 
-const TicketsContext = createContext();
+export const TicketsContext = createContext();
 
 export const TicketsProvider = ({ children }) => {
-    const { tickets, addTicket, removeTicket } = useTickets();
+    const [tickets, setTickets] = useState([]);
+
+    const fetchTickets = useCallback(async () => {
+        try {
+            const response = await apiUtils.get('/api/Tickets');
+            setTickets(response.data);
+        } catch (error) {
+            console.error('An error in the ticketing process:', error);
+        }
+    }, []);
+
+    const addTicket = (newTicket) => {
+        setTickets((prevTickets) => [...prevTickets, newTicket]);
+    };
+
+    const deleteTicket = (ticketId) => {
+        setTickets((prevTickets) => prevTickets.filter(ticket => ticket.id !== ticketId));
+    };
 
     return (
-        <TicketsContext.Provider value={{ tickets, addTicket, removeTicket }}>
+        <TicketsContext.Provider value={{ tickets, fetchTickets, addTicket, deleteTicket }}>
             {children}
         </TicketsContext.Provider>
     );
-};
-
-export const useTicketsContext = () => {
-    const context = useContext(TicketsContext);
-    if (context === undefined) {
-        throw new Error('useTicketsContext must be used within a TicketsProvider');
-    }
-    return context;
 };

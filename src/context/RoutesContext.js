@@ -1,23 +1,31 @@
-import React, { createContext, useState, useContext } from 'react';
-import { useRoutes } from '../hooks/useRoutes';
+import React, { createContext, useState, useCallback } from 'react';
+import apiUtils from '../utils/apiUtils';
 
-
-const RoutesContext = createContext();
+export const RoutesContext = createContext();
 
 export const RoutesProvider = ({ children }) => {
-    const { routes, addRoute, removeRoute, fetchRoutes } = useRoutes();
+    const [routes, setRoutes] = useState([]);
+
+    const fetchRoutes = useCallback(async () => {
+        try {
+            const response = await apiUtils.get('/Routes');
+            setRoutes(response.data);
+        } catch (error) {
+            console.error('Error when receiving routes:', error);
+        }
+    }, []);
+
+    const addRoute = (newRoute) => {
+        setRoutes((prevRoutes) => [...prevRoutes, newRoute]);
+    };
+    
+    const deleteRoute = (routeId) => {
+        setRoutes((prevRoutes) => prevRoutes.filter(route => route.id !== routeId));
+    };
 
     return (
-        <RoutesContext.Provider value={{ routes, addRoute, removeRoute, fetchRoutes }}>
+        <RoutesContext.Provider value={{ routes, fetchRoutes, addRoute, deleteRoute }}>
             {children}
         </RoutesContext.Provider>
     );
-};
-
-export const useRoutesContext = () => {
-    const context = useContext(RoutesContext);
-    if (context === undefined) {
-        throw new Error('useRoutesContext must be used within a RoutesProvider');
-    }
-    return context;
 };
