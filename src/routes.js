@@ -1,7 +1,5 @@
-// /routes.js
-
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/Auth/LoginPage';
 import RegisterPage from './pages/Auth/RegisterPage';
@@ -10,21 +8,21 @@ import StationPage from './pages/Stations/StationPage';
 import TicketPage from './pages/Tickets/TicketPage';
 import TrainPage from './pages/Trains/TrainPage';
 
-const Routes = () => {
+const AppRoutes = () => {
     return (
         <Router>
-            <Switch>
-                <Route path="/" exact component={HomePage} />
-                <Route path="/login" component={LoginPage} />
-                <Route path="/register" component={RegisterPage} />
-                <Route path="/routes" component={RoutePage} />
-                <Route path="/stations" component={StationPage} />
-                <Route path="/tickets" component={TicketPage} />
-                <Route path="/trains" component={TrainPage} />
+            <Routes>
+                <Route path="/" exact element={<HomePage/>} />
+                <Route path="/login" element={<LoginPage/>} />
+                <Route path="/register" element={<RegisterPage/>} />
+                <Route path="/routes" element={<RoutePage/>} />
+                <Route path="/stations" element={<StationPage/>} />
+                <Route path="/tickets" element={<TicketPage/>} />
+                <Route path="/trains" element={<TrainPage/>} />
                 {/* Another route */}
-            </Switch>
+            </Routes>
         </Router>
     );
 };
 
-export default Routes;
+export default AppRoutes;

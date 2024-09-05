@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useCallback } from 'react';
 import apiUtils from '../utils/apiUtils';
 
 export const TicketsContext = createContext();

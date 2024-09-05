@@ -1,5 +1,5 @@
 import React from 'react';
-import Routes from './routes';
+import AppRoutes from './routes';
 import {AuthProvider} from './context/AuthContext';
 import {RoutesProvider} from './context/RoutesContext';
 import {StationProvider} from './context/StationContext';
@@ -16,7 +16,7 @@ function App() {
                     <TicketsProvider>
                         <TrainsProvider>
                             <div className="app">
-                                <Routes/>
+                                <AppRoutes/>
                             </div>
                         </TrainsProvider>
                     </TicketsProvider>
