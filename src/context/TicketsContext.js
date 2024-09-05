@@ -8,7 +8,7 @@ export const TicketsProvider = ({ children }) => {
 
     const fetchTickets = useCallback(async () => {
         try {
-            const response = await apiUtils.get('/api/Tickets');
+            const response = await apiUtils.get('api/Tickets');
             setTickets(response.data);
         } catch (error) {
             console.error('An error in the ticketing process:', error);

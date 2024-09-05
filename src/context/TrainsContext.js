@@ -8,7 +8,7 @@ export const TrainsProvider = ({ children }) => {
 
     const fetchTrains = useCallback(async () => {
         try {
-            const response = await apiUtils.get('/api/Trains');
+            const response = await apiUtils.get('api/Trains');
             setTrains(response.data);
         } catch (error) {
             console.error('Error when receiving trains:', error);
