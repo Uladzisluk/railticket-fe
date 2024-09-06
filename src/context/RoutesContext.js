@@ -9,7 +9,7 @@ export const RoutesProvider = ({ children }) => {
     const fetchRoutes = useCallback(async () => {
         try {
             const response = await apiUtils.get('api/Routes');
-            setRoutes(response.data);
+            setRoutes(response.data.data);
         } catch (error) {
             console.error('Error when receiving routes:', error);
         }

@@ -9,7 +9,7 @@ export const StationProvider = ({ children }) => {
     const fetchStations = useCallback(async () => {
         try {
             const response = await apiUtils.get('api/Station');
-            setStations(response.data);
+            setStations(response.data.data);
         } catch (error) {
             console.error('Error in receiving stations:', error);
         }
