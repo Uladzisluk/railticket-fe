@@ -4,7 +4,8 @@ const StationDetail = ({ station, onDelete }) => {
     return (
         <div className="station-detail">
             <h3>{station.name}</h3>
-            <p>Station ID: {station.id}</p>
+            <p>City: {station.city}</p>
+            <p>Country: {station.country}</p>
             <button onClick={() => onDelete(station.id)}>Delete</button>
         </div>
     );
