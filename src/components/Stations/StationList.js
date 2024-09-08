@@ -16,7 +16,7 @@ const StationList = ({ stations, onDelete, onAdd }) => {
             ) : (
                 <p>Stations not found</p>
             )}
-            <button onClick={() => onAdd({ name: 'New station' })}>Add station</button>
+            <button onClick={() => onAdd({ name: 'Wrzeszcz', city: 'Gdansk', country: "Poland" })}>Add station</button>
         </div>
     );
 };

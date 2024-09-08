@@ -16,7 +16,7 @@ const TrainList = ({ trains, onDelete, onAdd }) => {
             ) : (
                 <p>Trains not found</p>
             )}
-            <button onClick={() => onAdd({ name: 'New train', type: 'Speed' })}>
+            <button onClick={() => onAdd({ name: 'New train', number: '151608' })}>
                 Add train
             </button>
         </div>

@@ -9,9 +9,11 @@ const RouteDetail = ({ route, onDelete }) => {
 
     return (
         <div className="route-detail">
-            <h3>{route.name}</h3>
-            <p>From: {route.origin}</p>
-            <p>To: {route.destination}</p>
+            <p>From: {route.departureStation}</p>
+            <p>To: {route.arrivalStation}</p>
+            <p>Train number: {route.trainNumber}</p>
+            <p>Departure time: {route.departureTime}</p>
+            <p>Arrival time: {route.arrivalTime}</p>
             <button onClick={handleDelete}>Delete</button>
         </div>
     );

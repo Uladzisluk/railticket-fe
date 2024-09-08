@@ -4,68 +4,45 @@ import apiUtils from '../utils/apiUtils';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const response = await apiUtils.get('/api/Auth/me', {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-                    setUser(response.data);
-                } catch (err) {
-                    console.error('Authorization verification error:', err);
-                }
-            }
-            setLoading(false);
-        };
-
-        checkAuth();
-    }, []);
-
     const handleLogin = async (credentials) => {
-        setLoading(true);
-        try {
-            const response = await apiUtils.post('/api/Auth/login', credentials);
-            localStorage.setItem('token', response.data.token);
-            setUser(response.data.user);
+        const config = {
+            token: 'null',
+        }
+        const response = await apiUtils.post('/api/Auth/login', credentials, config);
+        console.log(response.data.data);
+        const data = response.data.data;
+        const status = response.data.status;
+        if(status === 200){
+            localStorage.setItem('token', data);
             setError(null);
-        } catch (err) {
-            setError('Login error. Please check your details.');
-            console.error('Login error:', err);
-        } finally {
-            setLoading(false);
+        }else{
+            setError('Login failed. User doesn\'t exist or bad credentials.');
         }
     };
 
     const handleRegister = async (credentials) => {
-        setLoading(true);
         try {
-            const response = await apiUtils.post('/api/Auth/register', credentials);
-            localStorage.setItem('token', response.data.token);
-            setUser(response.data.user);
+            const config = {
+                token: 'null',
+            }
+            const response = await apiUtils.post('/api/Auth/register', credentials, config);
+            console.log(response.body);
             setError(null);
         } catch (err) {
             setError('Registration error. Please try again.');
             console.error('Registration error:', err);
         } finally {
-            setLoading(false);
         }
     };
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, error, handleLogin, handleRegister, handleLogout }}>
+        <AuthContext.Provider value={{ error, handleLogin, handleRegister, handleLogout, setError }}>
             {children}
         </AuthContext.Provider>
     );

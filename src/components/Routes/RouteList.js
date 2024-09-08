@@ -12,7 +12,7 @@ const RouteList = ({ routes, onDelete, onAdd }) => {
                 <p>Routes not found</p>
             )}
             {/* Button for adding a new route */}
-            <button onClick={() => onAdd({ name: 'New route', origin: 'Station A', destination: 'Station B' })}>
+            <button onClick={() => onAdd({ departureStationId: 'New route', origin: 'Station A', destination: 'Station B' })}>
                 Add route
             </button>
         </div>

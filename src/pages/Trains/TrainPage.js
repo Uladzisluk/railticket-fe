@@ -5,7 +5,7 @@ import { useTrains } from '../../hooks/useTrains';
 import '../../App.css';
 
 const TrainPage = () => {
-    const { trains, fetchTrains, addTrain, deleteTrain } = useContext(TrainsContext);
+    const { trains, fetchTrains, changeLoading } = useContext(TrainsContext);
     const { handleAddTrain, handleDeleteTrain } = useTrains();
 
     useEffect(() => {
@@ -14,8 +14,8 @@ const TrainPage = () => {
 
     const handleAddClick = async (newTrainData) => {
         try {
-            const addedTrain = await handleAddTrain(newTrainData);
-            addTrain(addedTrain);
+            changeLoading(true);
+            await handleAddTrain(newTrainData);
         } catch (error) {
             console.error('Error when adding a train:', error);
         }
@@ -24,7 +24,6 @@ const TrainPage = () => {
     const handleDeleteClick = async (trainId) => {
         try {
             await handleDeleteTrain(trainId);
-            deleteTrain(trainId);
         } catch (error) {
             console.error('Error when deleting a train:', error);
         }
