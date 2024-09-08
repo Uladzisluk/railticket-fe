@@ -7,11 +7,13 @@ export const AuthProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     const handleLogin = async (credentials) => {
-        const response = await apiUtils.post('/api/Auth/login', credentials);
+        const config = {
+            token: 'null',
+        }
+        const response = await apiUtils.post('/api/Auth/login', credentials, config);
         console.log(response.data.data);
         const data = response.data.data;
         const status = response.data.status;
-        debugger;
         if(status === 200){
             localStorage.setItem('token', data);
             setError(null);
@@ -22,8 +24,10 @@ export const AuthProvider = ({ children }) => {
 
     const handleRegister = async (credentials) => {
         try {
-            debugger;
-            const response = await apiUtils.post('/api/Auth/register', credentials);
+            const config = {
+                token: 'null',
+            }
+            const response = await apiUtils.post('/api/Auth/register', credentials, config);
             console.log(response.body);
             setError(null);
         } catch (err) {

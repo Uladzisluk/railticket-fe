@@ -31,7 +31,10 @@ export const StationProvider = ({ children }) => {
     const fetchStations = useCallback(async () => {
         try {
             setIsFetching(true);
-            const response = await apiUtils.get('api/Station');
+            const config = {
+                token: localStorage.getItem("token"),
+            }
+            const response = await apiUtils.get('api/Station', config);
             setStations((prevStations) => {
                 const newStations = response.data.data;
                 if (JSON.stringify(prevStations) !== JSON.stringify(newStations)) {

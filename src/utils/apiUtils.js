@@ -8,11 +8,12 @@ const api = axios.create({
     },
 });
 
-const sendRequestWithCorrelationId = async (url, data = {}) => {
+const sendRequestWithCorrelationId = async (url, data, config = {}) => {
     const correlationId = generateCorrelationId();
     try {
-        const response = await apiUtils.post(url, data, {
+        const response = await api.post(url, data, {
             headers: {
+                'Authorization': 'Bearer ' + config.token,
                 'correlationId': correlationId,
             }
         });
@@ -26,7 +27,11 @@ const sendRequestWithCorrelationId = async (url, data = {}) => {
 
 const get = async (url, config = {}) => {
     try {
-        return await api.get(url, config);
+        return await api.get(url, {
+            headers: {
+                'Authorization': 'Bearer ' + config.token,
+            }
+        });
     } catch (error) {
         console.error(`URL GET request error: ${url}`, error);
         throw error;
@@ -35,7 +40,11 @@ const get = async (url, config = {}) => {
 
 const post = async (url, data, config = {}) => {
     try {
-        return await api.post(url, data, config);
+        return await api.post(url, data, {
+            headers: {
+                'Authorization': 'Bearer ' + config.token,
+            }
+        });
     } catch (error) {
         console.error(`URL POST request error: ${url}`, error);
         throw error;
@@ -51,12 +60,13 @@ const del = async (url, config = {}) => {
     }
 };
 
-const delRequestWithCorrelationId = async (url = {}) => {
+const delRequestWithCorrelationId = async (url, config = {}) => {
     const correlationId = generateCorrelationId();
     try {
-        const response = await apiUtils.delete(url, {
+        const response = await api.delete(url, {
             headers: {
                 'correlationId': correlationId,
+                'Authorization': 'Bearer ' + config.token,
             }
         });
         console.log('Delete request sent with correlationId:', correlationId);

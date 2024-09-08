@@ -31,7 +31,10 @@ export const TrainsProvider = ({ children }) => {
     const fetchTrains = useCallback(async () => {
         try {
             setIsFetching(true);
-            const response = await apiUtils.get('api/Trains');
+            const config = {
+                token: localStorage.getItem("token"),
+            }
+            const response = await apiUtils.get('api/Trains', config);
             setTrains((prevTrains) => {
                 const newTrains = response.data.data;
                 if (JSON.stringify(prevTrains) !== JSON.stringify(newTrains)) {

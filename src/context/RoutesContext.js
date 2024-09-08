@@ -32,7 +32,10 @@ export const RoutesProvider = ({ children }) => {
     const fetchRoutes = useCallback(async () => {
         try {
             setIsFetching(true);
-            const response = await apiUtils.get('api/Routes');
+            const config = {
+                token: localStorage.getItem("token"),
+            }
+            const response = await apiUtils.get('api/Routes', config);
             setRoutes((prevRoutes) => {
                 const newRoutes = response.data.data;
                 if (JSON.stringify(prevRoutes) !== JSON.stringify(newRoutes)) {

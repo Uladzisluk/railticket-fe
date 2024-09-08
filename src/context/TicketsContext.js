@@ -32,7 +32,10 @@ export const TicketsProvider = ({ children }) => {
     const fetchTickets = useCallback(async () => {
         try {
             setIsFetching(true);
-            const response = await apiUtils.get('api/Tickets');
+            const config = {
+                token: localStorage.getItem("token"),
+            }
+            const response = await apiUtils.get('api/Tickets', config);
             setTickets((prevTickets) => {
                 const newTickets = response.data.data;
                 if (JSON.stringify(prevTickets) !== JSON.stringify(newTickets)) {
