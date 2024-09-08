@@ -259,3 +259,27 @@ button[type="submit"]:hover {
   font-size: 0.9rem;
   margin-top: 10px;
 }
+
+.station-options {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10; /* Должен быть выше остальных элементов */
+  max-height: 150px; /* Высота для скроллинга */
+  overflow-y: auto;
+  width: 100%; /* Чтобы список был такой же ширины, как поле ввода */
+}
+
+.station-options li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.station-options li:hover {
+  background-color: #f0f0f0;
+}
+
+.form-group {
+  position: relative; /* Нужно для того, чтобы выпадающий список был относителен к этому блоку */
+}
