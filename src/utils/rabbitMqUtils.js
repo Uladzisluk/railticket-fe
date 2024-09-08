@@ -1,7 +1,7 @@
 import { Client } from '@stomp/stompjs';
 
 export const connectToRabbitMQ = (queueName, onMessageReceived) => {
-    const RABBITMQ_WS_URL = 'ws://localhost:15674/ws'; // Нативный WebSocket URL (без SockJS)
+    const RABBITMQ_WS_URL = 'ws://localhost:15674/ws';
 
     const stompClient = new Client({
         brokerURL: RABBITMQ_WS_URL,

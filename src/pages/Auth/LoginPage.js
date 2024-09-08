@@ -1,8 +1,7 @@
-// /pages/Auth/LoginPage.js
-
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Login from '../../components/Auth/Login';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../context/AuthContext';
 import '../../App.css';
 
 const LoginPage = () => {
@@ -18,10 +17,10 @@ const LoginPage = () => {
             await handleLogin({ email, password });
             setEmail('');
             setPassword('');
-            // Redirect to the home page
+            setError(null);
             window.location.href = '/';
         } catch (err) {
-            setError('Invalid email or password');
+            setError('Login failed. User doesn\'t exist or bad credentials.');
             console.error('Login error:', err);
         }
     };
@@ -37,6 +36,10 @@ const LoginPage = () => {
                 onSubmit={handleSubmit}
             />
             {error && <p className="error">{error}</p>}
+
+            <p>
+                Don't have an account? <Link to="/register">Register here</Link>
+            </p>
         </div>
     );
 };

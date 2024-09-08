@@ -1,9 +1,13 @@
 import React from 'react';
 
 const Register = ({
+                      name,
+                      phone,
                       email,
                       password,
                       confirmPassword,
+                      onNameChange,
+                      onPhoneChange,
                       onEmailChange,
                       onPasswordChange,
                       onConfirmPasswordChange,
@@ -11,6 +15,26 @@ const Register = ({
                   }) => {
     return (
         <form onSubmit={onSubmit} className="register-form">
+            <div>
+                <label htmlFor="name">Name:</label>
+                <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={onNameChange}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="phone">Phone:</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    value={phone}
+                    onChange={onPhoneChange}
+                    required
+                />
+            </div>
             <div>
                 <label htmlFor="email">Email:</label>
                 <input
