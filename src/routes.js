@@ -15,6 +15,13 @@ const ProtectedRoute = ({ element, ...rest }) => {
     const accessToken = tokenString && tokenString.trim() !== '';
     const isAuthenticated = !!accessToken;
 
+    if ((element.type === LoginPage || element.type === RegisterPage) && isAuthenticated){
+        return <Navigate to="/" />;
+    }
+    if ((element.type === LoginPage || element.type === RegisterPage) && !isAuthenticated){
+        return element;
+    }
+
     return isAuthenticated ? element : <Navigate to="/login" />;
 };
 
@@ -23,8 +30,8 @@ const AppRoutes = () => {
         <Router>
             <Routes>
                 <Route path="/" exact element={<ProtectedRoute element={<HomePage />} />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/login" element={<ProtectedRoute element={<LoginPage />} />} />
+                <Route path="/register" element={<ProtectedRoute element={<RegisterPage />} />}/>
 
                 <Route path="/routes" element={<ProtectedRoute element={<RoutePage />} />} />
                 <Route path="/stations" element={<ProtectedRoute element={<StationPage />} />} />

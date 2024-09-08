@@ -36,22 +36,27 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="register-page">
-            <h1>Registration</h1>
-            <Register
-                name={name}
-                phone={phone}
-                email={email}
-                password={password}
-                confirmPassword={confirmPassword}
-                onNameChange={(e) => setName(e.target.value)}
-                onPhoneChange={(e) => setPhone(e.target.value)}
-                onEmailChange={(e) => setEmail(e.target.value)}
-                onPasswordChange={(e) => setPassword(e.target.value)}
-                onConfirmPasswordChange={(e) => setConfirmPassword(e.target.value)}
-                onSubmit={handleSubmit}
-            />
-            {error && <p className="error">{error}</p>}
+        <div className="auth-page">
+            <div className="auth-container">
+                <h1>Registration</h1>
+                <Register
+                    name={name}
+                    phone={phone}
+                    email={email}
+                    password={password}
+                    confirmPassword={confirmPassword}
+                    onNameChange={(e) => setName(e.target.value)}
+                    onPhoneChange={(e) => setPhone(e.target.value)}
+                    onEmailChange={(e) => setEmail(e.target.value)}
+                    onPasswordChange={(e) => setPassword(e.target.value)}
+                    onConfirmPasswordChange={(e) => setConfirmPassword(e.target.value)}
+                    onSubmit={handleSubmit}
+                />
+                {error && <p className="error">{error}</p>}
+            </div>
+            <p>
+                Already have an account? <a href="/login">Log in here</a>
+            </p>
         </div>
     );
 };

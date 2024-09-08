@@ -20,6 +20,9 @@ const sendRequestWithCorrelationId = async (url, data, config = {}) => {
         console.log('Post request sent with correlationId:', correlationId);
         return correlationId;
     } catch (error) {
+        if(error.response.status === 401){
+            localStorage.setItem('token', '');
+        }
         console.error('Post request sending error:', error);
         throw error;
     }
@@ -27,12 +30,16 @@ const sendRequestWithCorrelationId = async (url, data, config = {}) => {
 
 const get = async (url, config = {}) => {
     try {
-        return await api.get(url, {
+        const response = await api.get(url, {
             headers: {
                 'Authorization': 'Bearer ' + config.token,
             }
         });
+        return response;
     } catch (error) {
+        if(error.response.status === 401){
+            localStorage.setItem('token', '');
+        }
         console.error(`URL GET request error: ${url}`, error);
         throw error;
     }
@@ -46,6 +53,9 @@ const post = async (url, data, config = {}) => {
             }
         });
     } catch (error) {
+        if(error.response.status === 401){
+            localStorage.setItem('token', '');
+        }
         console.error(`URL POST request error: ${url}`, error);
         throw error;
     }
@@ -55,6 +65,9 @@ const del = async (url, config = {}) => {
     try {
         return await api.delete(url, config);
     } catch (error) {
+        if(error.response.status === 401){
+            localStorage.setItem('token', '');
+        }
         console.error(`URL DELETE request error: ${url}`, error);
         throw error;
     }
@@ -72,6 +85,9 @@ const delRequestWithCorrelationId = async (url, config = {}) => {
         console.log('Delete request sent with correlationId:', correlationId);
         return correlationId;
     } catch (error) {
+        if(error.response.status === 401){
+            localStorage.setItem('token', '');
+        }
         console.error('Delete request sending error:', error);
         throw error;
     }
@@ -81,6 +97,9 @@ const put = async (url, data, config = {}) => {
     try {
         return await api.put(url, data, config);
     } catch (error) {
+        if(error.response.status === 401){
+            localStorage.setItem('token', '');
+        }
         console.error(`URL PUT request error: ${url}`, error);
         throw error;
     }
