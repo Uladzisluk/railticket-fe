@@ -5,7 +5,7 @@ import { useTickets } from '../../hooks/useTickets';
 import '../../App.css';
 
 const TicketPage = () => {
-    const { tickets, fetchTickets, addTicket, deleteTicket } = useContext(TicketsContext);
+    const { tickets, fetchTickets, changeLoading } = useContext(TicketsContext);
     const { handleAddTicket, handleDeleteTicket } = useTickets();
 
     useEffect(() => {
@@ -14,8 +14,8 @@ const TicketPage = () => {
 
     const handleAddClick = async (newTicketData) => {
         try {
-            const addedTicket = await handleAddTicket(newTicketData);
-            addTicket(addedTicket);
+            changeLoading(true);
+            await handleAddTicket(newTicketData);
         } catch (error) {
             console.error('Error when adding a ticket:', error);
         }
@@ -24,7 +24,6 @@ const TicketPage = () => {
     const handleDeleteClick = async (ticketId) => {
         try {
             await handleDeleteTicket(ticketId);
-            deleteTicket(ticketId);
         } catch (error) {
             console.error('Error when deleting a ticket:', error);
         }

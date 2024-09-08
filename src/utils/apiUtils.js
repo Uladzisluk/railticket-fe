@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const api = axios.create({
     baseURL: 'http://localhost:5077/',  // Change on real URL
@@ -6,6 +7,22 @@ const api = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
+const sendRequestWithCorrelationId = async (url, data = {}) => {
+    const correlationId = generateCorrelationId();
+    try {
+        const response = await apiUtils.post(url, data, {
+            headers: {
+                'correlationId': correlationId,
+            }
+        });
+        console.log('Post request sent with correlationId:', correlationId);
+        return correlationId;
+    } catch (error) {
+        console.error('Post request sending error:', error);
+        throw error;
+    }
+};
 
 const get = async (url, config = {}) => {
     try {
@@ -34,6 +51,22 @@ const del = async (url, config = {}) => {
     }
 };
 
+const delRequestWithCorrelationId = async (url = {}) => {
+    const correlationId = generateCorrelationId();
+    try {
+        const response = await apiUtils.delete(url, {
+            headers: {
+                'correlationId': correlationId,
+            }
+        });
+        console.log('Delete request sent with correlationId:', correlationId);
+        return correlationId;
+    } catch (error) {
+        console.error('Delete request sending error:', error);
+        throw error;
+    }
+};
+
 const put = async (url, data, config = {}) => {
     try {
         return await api.put(url, data, config);
@@ -48,6 +81,10 @@ const apiUtils = {
     post,
     delete: del,  // Rename 'delete' to avoid conflicts with the keyword
     put,
+    sendRequestWithCorrelationId,
+    delRequestWithCorrelationId,
 };
+
+const generateCorrelationId = () => uuidv4();
 
 export default apiUtils;

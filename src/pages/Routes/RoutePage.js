@@ -5,7 +5,7 @@ import { useRoutes } from '../../hooks/useRoutes';
 import '../../App.css';
 
 const RoutePage = () => {
-    const { routes, fetchRoutes, addRoute, deleteRoute } = useContext(RoutesContext);
+    const { routes, fetchRoutes, changeLoading } = useContext(RoutesContext);
     const { handleAddRoute, handleDeleteRoute } = useRoutes();
 
     useEffect(() => {
@@ -14,8 +14,8 @@ const RoutePage = () => {
 
     const handleAddClick = async (newRouteData) => {
         try {
-            const addedRoute = await handleAddRoute(newRouteData);
-            addRoute(addedRoute);
+            changeLoading(true);
+            await handleAddRoute(newRouteData);
         } catch (error) {
             console.error('Error when adding a route:', error);
         }
@@ -24,7 +24,6 @@ const RoutePage = () => {
     const handleDeleteClick = async (routeId) => {
         try {
             await handleDeleteRoute(routeId);
-            deleteRoute(routeId);
         } catch (error) {
             console.error('Error when deleting a route:', error);
         }

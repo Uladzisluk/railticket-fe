@@ -7,7 +7,7 @@ import { useStation } from '../../hooks/useStation';
 import '../../App.css';
 
 const StationPage = () => {
-    const { stations, fetchStations, addStation, deleteStation } = useContext(StationContext);
+    const { stations, fetchStations, changeLoading } = useContext(StationContext);
     const { handleAddStation, handleDeleteStation } = useStation();
 
     useEffect(() => {
@@ -16,8 +16,8 @@ const StationPage = () => {
 
     const handleAddClick = async (newStationData) => {
         try {
-            const addedStation = await handleAddStation(newStationData);
-            addStation(addedStation);
+            changeLoading(true);
+            await handleAddStation(newStationData);
         } catch (error) {
             console.error('Error when adding a station:', error);
         }
@@ -26,7 +26,6 @@ const StationPage = () => {
     const handleDeleteClick = async (stationId) => {
         try {
             await handleDeleteStation(stationId);
-            deleteStation(stationId);
         } catch (error) {
             console.error('Error when deleting a station:', error);
         }
