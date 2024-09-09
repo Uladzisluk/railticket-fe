@@ -41,7 +41,7 @@ const HomePage = () => {
             setFilteredFromStations(
                 stations
                     .filter(station => station.name.toLowerCase().includes(fromStation.toLowerCase()))
-                    .slice(0, 5) // Ограничиваем до 5 станций
+                    .slice(0, 5)
             );
         } else {
             setFilteredFromStations([]);
@@ -53,7 +53,7 @@ const HomePage = () => {
             setFilteredToStations(
                 stations
                     .filter(station => station.name.toLowerCase().includes(toStation.toLowerCase()))
-                    .slice(0, 5) // Ограничиваем до 5 станций
+                    .slice(0, 5)
             );
         } else {
             setFilteredToStations([]);
