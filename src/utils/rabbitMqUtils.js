@@ -23,7 +23,7 @@ export const connectToRabbitMQ = (queueName, onMessageReceived) => {
             } else {
                 console.log('Message without body');
             }
-        });
+        }, { ack: 'client' });
     };
 
     stompClient.onStompError = (frame) => {

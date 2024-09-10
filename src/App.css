@@ -366,7 +366,7 @@ button[type="submit"]:hover {
   padding: 20px;
   z-index: 1000;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .modal-overlay {
@@ -395,6 +395,7 @@ button[type="submit"]:hover {
   flex-direction: row;
   overflow-x: auto;
   padding: 20px 0;
+  flex: 2;
 }
 
 .available-seats-list {
@@ -415,8 +416,27 @@ button[type="submit"]:hover {
   background-color: #f0f0f0;
 }
 
+.seat-item.selected {
+  border-color: #007bff;
+  background-color: #d0e7ff;
+}
+
 .seat-item:hover {
   background-color: #ccc;
 }
 
+.ticket-info {
+  flex: 1;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
 
+.buy-ticket-button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}

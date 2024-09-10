@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import RouteList from '../../components/Routes/RouteList';
 import apiUtils from '../../utils/apiUtils';
 import '../../App.css';
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -13,10 +13,13 @@ const RoutePage = () => {
     const [loading, setLoading] = useState(true);
     const [selectedRouteId, setSelectedRouteId] = useState(null);
     const [availableSeats, setAvailableSeats] = useState([]);
+    const [selectedSeat, setSelectedSeat] = useState(null);
+    const [departureTime, setDepartureTime] = useState("");  // Новый стейт для времени отправления
+    const [arrivalTime, setArrivalTime] = useState("");
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    const { state } = useLocation();
-    const { fromStation, toStation, date, time } = state || {};
+    const {state} = useLocation();
+    const {fromStation, toStation, date, time} = state || {};
 
     useEffect(() => {
         const fetchRoutes = async () => {
@@ -45,9 +48,11 @@ const RoutePage = () => {
         fetchRoutes();
     }, [fromStation, toStation, date, time]);
 
-    const handleBuyTicketClick = async (routeId) => {
+    const handleBuyTicketClick = async (routeId, departureTime, arrivalTime) => {
         setSelectedRouteId(routeId);
         setModalIsOpen(true);
+        setDepartureTime(departureTime);
+        setArrivalTime(arrivalTime);
 
         try {
             const config = {
@@ -61,7 +66,7 @@ const RoutePage = () => {
             let bookings = bookingsResponse.data.data || [];
 
             const bookedSeats = new Set(bookings.map(booking => booking.seatNumber));
-            const availableSeats = Array.from({ length: totalSeats }, (_, i) => i + 1).filter(seat => !bookedSeats.has(seat));
+            const availableSeats = Array.from({length: totalSeats}, (_, i) => i + 1).filter(seat => !bookedSeats.has(seat));
 
             setAvailableSeats(availableSeats);
         } catch (error) {
@@ -69,9 +74,38 @@ const RoutePage = () => {
         }
     };
 
+    const handleSeatClick = (seat) => {
+        setSelectedSeat(seat);
+    };
+
+    const handleTicketPurchase = async () => {
+        if (selectedSeat) {
+            try {
+                const config = {
+                    token: localStorage.getItem('token'),
+                };
+
+                const payload = {
+                    routeId: selectedRouteId,
+                    seatNumber: selectedSeat,
+                    bookingDate: date,
+                };
+
+                await apiUtils.sendRequestWithCorrelationId(`/api/Tickets/BuyTicket`, payload, config);
+
+                alert(`Ticket for seat ${selectedSeat} purchased successfully!`);
+                closeModal();
+            } catch (error) {
+                console.error('Error purchasing ticket:', error);
+                alert('Failed to purchase ticket.');
+            }
+        }
+    };
+
     const closeModal = () => {
         setModalIsOpen(false);
         setAvailableSeats([]);
+        setSelectedSeat(null);
     };
 
     return (
@@ -102,7 +136,7 @@ const RoutePage = () => {
                                     </div>
                                     <button
                                         className="buy-ticket-button"
-                                        onClick={() => handleBuyTicketClick(route.id)}
+                                        onClick={() => handleBuyTicketClick(route.id, route.departureTime, route.arrivalTime)}
                                     >
                                         Buy Ticket
                                     </button>
@@ -128,7 +162,11 @@ const RoutePage = () => {
                     {availableSeats.length > 0 ? (
                         <div className="available-seats-list">
                             {availableSeats.map(seat => (
-                                <div key={seat} className="seat-item">
+                                <div
+                                    key={seat}
+                                    className={`seat-item ${selectedSeat === seat ? 'selected' : ''}`}
+                                    onClick={() => handleSeatClick(seat)}
+                                >
                                     Seat {seat}
                                 </div>
                             ))}
@@ -137,6 +175,19 @@ const RoutePage = () => {
                         <p>No seats available</p>
                     )}
                 </div>
+
+                {selectedSeat && (
+                    <div className="ticket-info">
+                        <h3>Ticket Information</h3>
+                        <p><strong>Route:</strong> {fromStation} - {toStation}</p>
+                        <p><strong>Date:</strong> {date}</p>
+                        <p><strong>Time:</strong> {departureTime} - {arrivalTime}</p>
+                        <p><strong>Selected Seat:</strong> {selectedSeat}</p>
+                        <button className="buy-ticket-button" onClick={handleTicketPurchase}>
+                            Buy
+                        </button>
+                    </div>
+                )}
             </Modal>
         </div>
     );

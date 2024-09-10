@@ -18,7 +18,6 @@ export const TicketsProvider = ({ children }) => {
     const handleRabbitMQMessage = (message) => {
         const { data } = JSON.parse(message.body);
         console.log(data);
-        debugger;
         if (!isFetching) {
             fetchTickets();
         }

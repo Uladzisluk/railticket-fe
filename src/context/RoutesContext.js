@@ -10,15 +10,14 @@ export const RoutesProvider = ({ children }) => {
     const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
-        const queueName = 'route_response';
+        const queueName = 'ticket_response';
 
         connectToRabbitMQ(queueName, handleRabbitMQMessage);
     }, []);
 
     const handleRabbitMQMessage = (message) => {
         const { data } = JSON.parse(message.body);
-        console.log(data);
-        debugger;
+        console.log(message);
         if (!isFetching) {
             fetchRoutes();
         }
