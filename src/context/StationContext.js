@@ -10,9 +10,10 @@ export const StationProvider = ({ children }) => {
     const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
+        const topicName = 'station_exchange';
         const queueName = 'station_response';
 
-        connectToRabbitMQ(queueName, handleRabbitMQMessage);
+        connectToRabbitMQ(topicName, queueName, handleRabbitMQMessage);
     }, []);
 
     const handleRabbitMQMessage = (message) => {

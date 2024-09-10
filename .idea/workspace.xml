@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d69fb6f3-1554-401c-a0e8-ce62dd6dcde6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/context/RoutesContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/RoutesContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/StationContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/StationContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/context/TicketsContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/TicketsContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Routes/RoutePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Routes/RoutePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/TrainsContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/TrainsContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/rabbitMqUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/rabbitMqUtils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,7 +56,7 @@
       <option name="presentableId" value="Default" />
       <updated>1725805846330</updated>
       <workItem from="1725805847534" duration="3761000" />
-      <workItem from="1725908130363" duration="16478000" />
+      <workItem from="1725908130363" duration="18779000" />
     </task>
     <servers />
   </component>
