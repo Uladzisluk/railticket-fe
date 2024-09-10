@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import RouteList from '../../components/Routes/RouteList';
 import apiUtils from '../../utils/apiUtils';
 import '../../App.css';
-import {useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
+import { connectToRabbitMQ } from "../../utils/rabbitMqUtils";
 
 Modal.setAppElement('#root');
 
@@ -11,15 +12,17 @@ const RoutePage = () => {
     const [routes, setRoutes] = useState([]);
     const [filteredRoutes, setFilteredRoutes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedRouteId, setSelectedRouteId] = useState(null);
-    const [availableSeats, setAvailableSeats] = useState([]);
     const [selectedSeat, setSelectedSeat] = useState(null);
-    const [departureTime, setDepartureTime] = useState("");  // Новый стейт для времени отправления
+    const [departureTime, setDepartureTime] = useState("");
     const [arrivalTime, setArrivalTime] = useState("");
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [availableSeats, setAvailableSeats] = useState([]);
 
-    const {state} = useLocation();
-    const {fromStation, toStation, date, time} = state || {};
+    const selectedRouteIdRef = useRef(null);
+    const availableSeatsRef = useRef([]);
+
+    const { state } = useLocation();
+    const { fromStation, toStation, date, time } = state || {};
 
     useEffect(() => {
         const fetchRoutes = async () => {
@@ -48,11 +51,37 @@ const RoutePage = () => {
         fetchRoutes();
     }, [fromStation, toStation, date, time]);
 
+    useEffect(() => {
+        const topicName = 'ticket_exchange';
+        const queueName = 'ticket_response';
+
+        if (selectedRouteIdRef.current !== null) {
+            connectToRabbitMQ(topicName, queueName, handleRabbitMQMessage);
+        }
+
+        return () => {
+
+        };
+    }, [selectedRouteIdRef.current]);
+
+    const handleRabbitMQMessage = (message) => {
+        const { data } = JSON.parse(message.body);
+        console.log(message);
+        if (data.RouteId === selectedRouteIdRef.current && data.BookingDate === date) {
+            availableSeatsRef.current = availableSeatsRef.current.filter(seat => seat !== data.SeatNumber);
+            setAvailableSeats(availableSeatsRef.current);
+        }
+        setLoading(false);
+    };
+
     const handleBuyTicketClick = async (routeId, departureTime, arrivalTime) => {
-        setSelectedRouteId(routeId);
-        setModalIsOpen(true);
+        selectedRouteIdRef.current = routeId;
         setDepartureTime(departureTime);
         setArrivalTime(arrivalTime);
+
+        const topicName = 'ticket_exchange';
+        const queueName = 'ticket_response';
+        connectToRabbitMQ(topicName, queueName, handleRabbitMQMessage);
 
         try {
             const config = {
@@ -66,9 +95,11 @@ const RoutePage = () => {
             let bookings = bookingsResponse.data.data || [];
 
             const bookedSeats = new Set(bookings.map(booking => booking.seatNumber));
-            const availableSeats = Array.from({length: totalSeats}, (_, i) => i + 1).filter(seat => !bookedSeats.has(seat));
+            const availableSeats = Array.from({ length: totalSeats }, (_, i) => i + 1).filter(seat => !bookedSeats.has(seat));
 
+            availableSeatsRef.current = availableSeats;
             setAvailableSeats(availableSeats);
+            setModalIsOpen(true);
         } catch (error) {
             console.error('Error fetching train or booking data:', error);
         }
@@ -86,7 +117,7 @@ const RoutePage = () => {
                 };
 
                 const payload = {
-                    routeId: selectedRouteId,
+                    routeId: selectedRouteIdRef.current,
                     seatNumber: selectedSeat,
                     date: date,
                 };
@@ -103,7 +134,6 @@ const RoutePage = () => {
 
     const closeModal = () => {
         setModalIsOpen(false);
-        setAvailableSeats([]);
         setSelectedSeat(null);
     };
 
