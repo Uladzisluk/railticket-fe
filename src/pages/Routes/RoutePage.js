@@ -88,9 +88,8 @@ const RoutePage = () => {
                 const payload = {
                     routeId: selectedRouteId,
                     seatNumber: selectedSeat,
-                    bookingDate: date,
+                    date: date,
                 };
-
                 await apiUtils.sendRequestWithCorrelationId(`/api/Tickets/BuyTicket`, payload, config);
 
                 alert(`Ticket for seat ${selectedSeat} purchased successfully!`);
