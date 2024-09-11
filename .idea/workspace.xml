@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d69fb6f3-1554-401c-a0e8-ce62dd6dcde6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/Tickets/TicketDetail.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Tickets/TicketList.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Tickets/TicketPage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Tickets/TicketDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Tickets/TicketDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Tickets/TicketList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Tickets/TicketList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/TicketsContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/TicketsContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/HomePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Routes/RoutePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Routes/RoutePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Tickets/TicketPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Tickets/TicketPage.js" afterDir="false" />
-    </list>
+    <list default="true" id="d69fb6f3-1554-401c-a0e8-ce62dd6dcde6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,7 +60,7 @@
       <workItem from="1725805847534" duration="3761000" />
       <workItem from="1725908130363" duration="20181000" />
       <workItem from="1725953813835" duration="18000" />
-      <workItem from="1725992193874" duration="16748000" />
+      <workItem from="1725992193874" duration="17494000" />
     </task>
     <servers />
   </component>
