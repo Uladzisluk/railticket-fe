@@ -39,7 +39,7 @@ const HomePage = () => {
     useEffect(() => {
         if (fromStation) {
             setFilteredFromStations(
-                stations
+                Array.from(stations)
                     .filter(station => station.name.toLowerCase().includes(fromStation.toLowerCase()))
                     .slice(0, 5)
             );
@@ -51,7 +51,7 @@ const HomePage = () => {
     useEffect(() => {
         if (toStation) {
             setFilteredToStations(
-                stations
+                Array.from(stations)
                     .filter(station => station.name.toLowerCase().includes(toStation.toLowerCase()))
                     .slice(0, 5)
             );
