@@ -67,6 +67,7 @@ const RoutePage = () => {
     const handleRabbitMQMessage = (message) => {
         const { data } = JSON.parse(message.body);
         console.log(message);
+
         if (data.RouteId === selectedRouteIdRef.current && data.BookingDate === date) {
             availableSeatsRef.current = availableSeatsRef.current.filter(seat => seat !== data.SeatNumber);
             setAvailableSeats(availableSeatsRef.current);
@@ -92,7 +93,7 @@ const RoutePage = () => {
             const totalSeats = trainResponse.data.data.totalSeats;
 
             const bookingsResponse = await apiUtils.get(`/api/Routes/$${routeId}/Bookings`, config);
-            let bookings = bookingsResponse.data.data || [];
+            let bookings = Array.from(bookingsResponse.data.data).filter(booking => booking.bookingDate === date) || [];
 
             const bookedSeats = new Set(bookings.map(booking => booking.seatNumber));
             const availableSeats = Array.from({ length: totalSeats }, (_, i) => i + 1).filter(seat => !bookedSeats.has(seat));
