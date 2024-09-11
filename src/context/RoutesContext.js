@@ -1,6 +1,6 @@
 import React, {createContext, useState, useCallback, useEffect} from 'react';
 import apiUtils from '../utils/apiUtils';
-import {connectToRabbitMQ} from "../utils/rabbitMqUtils";
+
 
 export const RoutesContext = createContext();
 
@@ -8,22 +8,6 @@ export const RoutesProvider = ({ children }) => {
     const [routes, setRoutes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isFetching, setIsFetching] = useState(false);
-
-    useEffect(() => {
-        const queueName = 'route_response';
-
-        connectToRabbitMQ(queueName, handleRabbitMQMessage);
-    }, []);
-
-    const handleRabbitMQMessage = (message) => {
-        const { data } = JSON.parse(message.body);
-        console.log(data);
-        debugger;
-        if (!isFetching) {
-            fetchRoutes();
-        }
-        setLoading(false);
-    };
 
     const changeLoading = (newLoading) => {
         setLoading(newLoading);

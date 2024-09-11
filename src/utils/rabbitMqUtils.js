@@ -1,6 +1,6 @@
 import { Client } from '@stomp/stompjs';
 
-export const connectToRabbitMQ = (queueName, onMessageReceived) => {
+export const connectToRabbitMQ = (topicName, queueName, onMessageReceived) => {
     const RABBITMQ_WS_URL = 'ws://localhost:15674/ws';
 
     const stompClient = new Client({
@@ -16,7 +16,7 @@ export const connectToRabbitMQ = (queueName, onMessageReceived) => {
     });
 
     stompClient.onConnect = (frame) => {
-        stompClient.subscribe(`/queue/${queueName}`, (message) => {
+        stompClient.subscribe(`/exchange/${topicName}/${queueName}`, (message) => {
             if (message.body) {
                 console.log('Message received:', message);
                 onMessageReceived(message);

@@ -10,15 +10,14 @@ export const TicketsProvider = ({ children }) => {
     const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
+        const topicName = 'ticket_exchange';
         const queueName = 'ticket_response';
 
-        connectToRabbitMQ(queueName, handleRabbitMQMessage);
+        connectToRabbitMQ(topicName, queueName, handleRabbitMQMessage);
     }, []);
 
     const handleRabbitMQMessage = (message) => {
         const { data } = JSON.parse(message.body);
-        console.log(data);
-        debugger;
         if (!isFetching) {
             fetchTickets();
         }
@@ -49,14 +48,6 @@ export const TicketsProvider = ({ children }) => {
             setIsFetching(false);
         }
     }, []);
-
-    const addTicket = (newTicket) => {
-        setTickets((prevTickets) => [...prevTickets, newTicket]);
-    };
-
-    const deleteTicket = (ticketId) => {
-        setTickets((prevTickets) => prevTickets.filter(ticket => ticket.id !== ticketId));
-    };
 
     return (
         <TicketsContext.Provider value={{ tickets, fetchTickets, changeLoading }}>
