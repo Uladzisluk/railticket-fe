@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import RouteList from '../../components/Routes/RouteList';
 import apiUtils from '../../utils/apiUtils';
 import '../../App.css';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import { connectToRabbitMQ } from "../../utils/rabbitMqUtils";
+import { useAuth } from '../../context/AuthContext';
 
 Modal.setAppElement('#root');
 
@@ -23,6 +24,9 @@ const RoutePage = () => {
 
     const { state } = useLocation();
     const { fromStation, toStation, date, time } = state || {};
+
+    const { handleLogout } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchRoutes = async () => {
@@ -73,6 +77,11 @@ const RoutePage = () => {
             setAvailableSeats(availableSeatsRef.current);
         }
         setLoading(false);
+    };
+
+    const handleLogoutClick = () => {
+        handleLogout();
+        navigate('/login');
     };
 
     const handleBuyTicketClick = async (routeId, departureTime, arrivalTime) => {
@@ -138,8 +147,16 @@ const RoutePage = () => {
         setSelectedSeat(null);
     };
 
+    const navigateToTickets = () => {
+        navigate('/tickets');
+    };
+
     return (
         <div className="route-page">
+            <div className="header">
+                <button onClick={handleLogoutClick} className="logout-button">Logout</button>
+                <button onClick={navigateToTickets} className="view-tickets-button">My Tickets</button>
+            </div>
             <h1>Available Routes</h1>
             {loading ? (
                 <p>Loading...</p>

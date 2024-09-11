@@ -49,14 +49,6 @@ export const TicketsProvider = ({ children }) => {
         }
     }, []);
 
-    const addTicket = (newTicket) => {
-        setTickets((prevTickets) => [...prevTickets, newTicket]);
-    };
-
-    const deleteTicket = (ticketId) => {
-        setTickets((prevTickets) => prevTickets.filter(ticket => ticket.id !== ticketId));
-    };
-
     return (
         <TicketsContext.Provider value={{ tickets, fetchTickets, changeLoading }}>
             {children}

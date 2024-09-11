@@ -79,10 +79,15 @@ const HomePage = () => {
         setToStation(station.name);
         setFilteredToStations([]);
     };
+    
+    const handleNavigateToTickets = () => {
+        navigate('/tickets');
+    };
 
     return (
         <div className="home-page">
             <button className="logout-button" onClick={handleLogOutClick}>Log Out</button>
+            <button className="view-tickets-button" onClick={handleNavigateToTickets}>My Tickets</button>
 
             <main className="main-content">
                 <h2>Book Your Train Ticket</h2>

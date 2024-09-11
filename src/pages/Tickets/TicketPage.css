@@ -1,0 +1,46 @@
+.ticket-page {
+    padding: 20px;
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logout-button {
+    padding: 10px 20px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ticket-page-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.ticket-list-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.no-tickets {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 20px;
+}
+
+.add-ticket-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
